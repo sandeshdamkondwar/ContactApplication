@@ -1,4 +1,19 @@
-ContactApplication
-==================
+Simple Web Application for managing contacts
+==========
 
-Simple web app to mange contacts locally
+User will be able to 
+
+Add contact
+Edit contact
+Delete contact or contacts
+Filter the contacts
+
+
+==========
+
+Technologies Used:
+
+Backbone,
+jQuery,
+Bootstrap,
+HTML5 Localstorage
