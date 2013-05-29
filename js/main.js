@@ -2,7 +2,7 @@ var contactListObject = [
     { 
         Name: "Sandesh D", 
         Photo: 'http://lorempixel.com/100/100/people/1', 
-        Address: "Hyderabad, Jubillee Hills1", 
+        Address: "Jubillee Hills, Hyderabad", 
         Telephone: "0123456789", 
         Email: "sandesh@gmail.com"
     },

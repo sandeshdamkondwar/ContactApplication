@@ -37,11 +37,44 @@
 			<div id="addNewModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					<h3 id="myModalLabel">Modal header</h3>
+					<h3 id="myModalLabel">Create New Contact</h3>
 				</div>
+				<!-- Modal Body Start-->
 				<div class="modal-body">
-					<p>Modal body</p>
+					<div class="form-horizontal">
+						<div class="control-group">
+							<label class="control-label" for="txtName">Name</label>
+							<div class="controls">
+								<input type="text" placeholder="Enter Contact Name" id="txtName" name="txtName">
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="txtAddress">Address</label>
+							<div class="controls">
+								<input type="text" placeholder="Enter Address" id="txtAddress" name="txtAddress">
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="txtTelephone">Telephone Number</label>
+							<div class="controls">
+								<input type="text" placeholder="Enter Telephone Number" id="txtTelephone" name="txtTelephone">
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="txtEmail">Email Address</label>
+							<div class="controls">
+								<input type="email" placeholder="Enter Email Address" id="txtEmail" name="txtEmail">
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="txtPhoto">Image Url</label>
+							<div class="controls">
+								<input type="text" placeholder="Enter Image URL" id="txtPhoto" name="txtPhoto">
+							</div>
+						</div>
+					</div>
 				</div>
+				<!-- Modal Body End -->
 				<div class="modal-footer">
 					<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
 					<button class="btn btn-primary">Create</button>
