@@ -1,13 +1,61 @@
-var contacts = [
-    { Name: "Sandesh D", Photo: 'http://lorempixel.com/100/100/people/1', Address: "Hyderabad, Jubillee Hills1", Telephone: "0123456789", Email: "sandesh@gmail.com"},
-    { Name: "Paul Irish", Photo: 'http://lorempixel.com/100/100/people/2', Address: "San Francisco", Telephone: "0123456789", Email: "paul@gmail.com"},
-    { Name: "Addy Oswani", Photo: 'http://lorempixel.com/100/100/people/3', Address: "London, England", Telephone: "0123456789", Email: "addy@gmail.com"},
-    { Name: "John Doe", Photo: 'http://lorempixel.com/100/100/people/4', Address: "Unknown City", Telephone: "0123456789", Email: "johndoe@gmail.com"},
-    { Name: "Mark Henry", Photo: 'http://lorempixel.com/100/100/people/5', Address: "Washington, DC", Telephone: "0123456789", Email: "mark@gmail.com"},
-    { Name: "Shemous", Photo: 'http://lorempixel.com/100/100/people/6', Address: "Washington, DC", Telephone: "0123456789", Email: "shemous@gmail.com"},
-    { Name: "Randy", Photo: 'http://lorempixel.com/100/100/people/7', Address: "Washington, DC", Telephone: "0123456789", Email: "randy@gmail.com"},
-    { Name: "Daniel Brian", Photo: 'http://lorempixel.com/100/100/people/8', Address: "Washington, DC", Telephone: "0123456789", Email: "daniel@gmail.com"}
-];
+var contactListObject = [
+    { 
+        Name: "Sandesh D", 
+        Photo: 'http://lorempixel.com/100/100/people/1', 
+        Address: "Hyderabad, Jubillee Hills1", 
+        Telephone: "0123456789", 
+        Email: "sandesh@gmail.com"
+    },
+    { 
+        Name: "Paul Irish", 
+        Photo: 'http://lorempixel.com/100/100/people/2', 
+        Address: "San Francisco", 
+        Telephone: "0123456789", 
+        Email: "paul@gmail.com"
+    },
+    { 
+        Name: "Addy Oswani", 
+        Photo: 'http://lorempixel.com/100/100/people/3', 
+        Address: "London, England", 
+        Telephone: "0123456789", 
+        Email: "addy@gmail.com"
+    },
+    { 
+        Name: "John Doe", 
+        Photo: 'http://lorempixel.com/100/100/people/4', 
+        Address: "Unknown City", 
+        Telephone: "0123456789", 
+        Email: "johndoe@gmail.com"
+    },
+    { 
+        Name: "Mark Henry", 
+        Photo: 'http://lorempixel.com/100/100/people/5', 
+        Address: "Washington, DC", 
+        Telephone: "0123456789", 
+        Email: "mark@gmail.com"
+    },
+    { 
+        Name: "Shemous", 
+        Photo: 'http://lorempixel.com/100/100/people/6', 
+        Address: "Washington, DC", 
+        Telephone: "0123456789", 
+        Email: "shemous@gmail.com"
+    },
+    { 
+        Name: "Randy", 
+        Photo: 'http://lorempixel.com/100/100/people/7', 
+        Address: "Washington, DC", 
+        Telephone: "0123456789", 
+        Email: "randy@gmail.com"
+    },
+    { 
+        Name: "Daniel Brian", 
+        Photo: 'http://lorempixel.com/100/100/people/8', 
+        Address: "Washington, DC", 
+        Telephone: "0123456789", 
+        Email: "daniel@gmail.com"
+    }
+], backUp = contactListObject;
 
 var Contact = Backbone.Model.extend({
     defaults: {
@@ -29,19 +77,39 @@ var ContactView = Backbone.View.extend({
     },
 
     events: {
-        "click .icon-edit": "displayEditBox"       
+        "click .btnEdit": "displayEditBox",
+        "click .btnDelete": "deleteContact",
+        "click .saveContact": "saveContact"
     },
 
     displayEditBox: function () {
-    	$('.editDetails').slideUp(200);
-    	if(this.$el.find('.editDetails').is(':visible'))
-	    	this.$el.find('.editDetails').slideUp(200);
-    	else 
-    		this.$el.find('.editDetails').slideDown(200);
+    	$('.editDetails').slideUp(300);
+    	if(!this.$el.find('.editDetails').is(':visible')) this.$el.find('.editDetails').slideDown(300);
+    },
+
+    deleteContact: function () {
+        this.model.destroy();
+        this.remove();
+        localStorage.setItem('contactListObject', JSON.stringify(contactsView.collection.toJSON()));
+        if(contactsView.collection.length == 0){
+            $('#reset').show();
+        }
+    },
+
+    saveContact: function() {
+        var data = {};
+        data.Name = this.$el.find('.txtName').val();
+        data.Address = this.$el.find('.txtAddress').val();
+        data.Telephone = this.$el.find('.txtTelephone').val();
+        data.Email = this.$el.find('.txtEmail').val();
+
+        this.model.set(data);
+        this.render();
+        localStorage.setItem('contactListObject', JSON.stringify(contactsView.collection.toJSON()));
     }
 });
 
-var Contacts = Backbone.Collection.extend({
+var ContactsCollection = Backbone.Collection.extend({
     model: Contact
     //localStorage: new Backbone.LocalStorage("contactList")
 });
@@ -50,13 +118,17 @@ var ContactsView = Backbone.View.extend({
     el: $("#contacts"),
 
     initialize: function () {
-        this.collection = new Contacts(contacts);
+        //Check if available in local Storage
+        if(typeof(localStorage.contactListObject) != "undefined") {
+            contactListObject = JSON.parse(localStorage.getItem('contactListObject'));
+            if(contactListObject.length == 0) $('#reset').show();
+        }
+
+        this.collection = new ContactsCollection(contactListObject);
         this.render();      
     },
 
     render: function () {
-        this.$el.find("article").remove();
-
         _.each(this.collection.models, function (item) {
             this.renderContact(item);
         }, this);
@@ -67,11 +139,26 @@ var ContactsView = Backbone.View.extend({
             model: item
         });
         this.$el.append(contactView.render().el);
-    },
-
-    events: {
-       
     }
 });
 
-var contacts = new ContactsView(); 
+
+var contactsView = new ContactsView(); 
+
+// Create local storage
+if(typeof(localStorage.contactListObject) == "undefined") {
+    localStorage.setItem('contactListObject', JSON.stringify(contactsView.collection.toJSON()));
+}
+
+// Reset button event listener
+$('#reset').on('click', function() {
+    contactListObject = backUp;    
+    localStorage.setItem('contactListObject', JSON.stringify(contactListObject));
+    contactsView.collection = new ContactsCollection(contactListObject);
+    contactsView.render();  
+    $(this).hide();
+});
+
+$('#searchContact').on('keyup', _.debounce(function(){
+    //Filter collection
+}, 500));

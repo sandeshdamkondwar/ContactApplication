@@ -3,6 +3,7 @@
 <head>
 	<title>Contact App</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" href="http://cdn1.iconfinder.com/data/icons/stuttgart/32/my-account.png">
 	<!-- Stylesheets -->
 	<link rel="stylesheet" href="css/bootstrap.css">
 	<link rel="stylesheet" href="css/bootstrap-responsive.css">
@@ -22,73 +23,93 @@
 	</script>
 </head>
 <body>
-	<div>
-		<div class="navbar">
-	      <div class="navbar-inner container-fluid">
-	      	<a href="#addNewModal" role="button" class="btn" data-toggle="modal">Add New Contact</a>
-	      	<div id="addNewModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-			  <div class="modal-header">
-			    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			    <h3 id="myModalLabel">Modal header</h3>
-			  </div>
-			  <div class="modal-body">
-			    <p>Modal body</p>
-			  </div>
-			  <div class="modal-footer">
-			    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-			    <button class="btn btn-primary">Create</button>
-			  </div>
-			</div>
-	        <div class="navbar-form pull-right">
-	          <input type="text">
-	          <button class="btn">Search</button>
-	        </div>
-	      </div>
-	    </div>
-		<div id="contacts" class="container-fluid"></div>
-	</div>
+	<!-- Navbar -->
+	<div class="navbar">
+		<div class="navbar-inner container-fluid">
+			
+			<!-- Modal toggle button -->
+			<a href="#addNewModal" role="button" class="btn" data-toggle="modal">
+				Add New Contact 
+				<span class="icon-plus"></span> 
+			</a>
 
+			<!-- Modal window-->
+			<div id="addNewModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h3 id="myModalLabel">Modal header</h3>
+				</div>
+				<div class="modal-body">
+					<p>Modal body</p>
+				</div>
+				<div class="modal-footer">
+					<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+					<button class="btn btn-primary">Create</button>
+				</div>
+			</div>
+
+			<!-- Contact Filter -->
+			<div class="navbar-form pull-right">
+				<input id="searchContact" type="text">
+				<button class="btn">Search</button>
+			</div>
+		</div>
+    </div>
+
+    <!-- Contact collection container -->
+	<div id="contacts" class="container-fluid">
+		
+		<button class="btn" id="reset" style="display:none;">Restore all contacts</button>
+	</div>
+	<!-- Contact Template -->
 	<script id="contactTmpl"  type="text/template">
  		<div style="overflow:auto">
  			<img src="{{ Photo }}" alt="{{ Name }}" class='userPhoto img-polaroid'/>
-		     <div class="info">
-		     	<div class="name">{{ Name }}</div>
-		 	    <div>Address: {{ Address }}</div>
-		         <div>Telephone Number: <span>{{ Telephone }}</span></div>
-		         <div>Email: <a href="mailto:{{ Email }}">{{ Email }}</a></div>
-		     </div>
-		     <i class="icon-edit" title="Edit This Contact"></i>
+			<div class="info">
+				<div class="name">{{ Name }}</div>
+				<div>Address: {{ Address }}</div>
+				<div>Telephone Number: <span>{{ Telephone }}</span></div>
+				<div>Email: <a href="mailto:{{ Email }}">{{ Email }}</a></div>
+			</div>
+			<a class="btn btnAction btnEdit"><span class="icon-edit" title="Edit This Contact"></span></a>
+			<a class="btn btnAction btnDelete"><span class="icon-trash" title="Delete This Contact"></span></a>
  		</div>
  		<clear/>
-	     <div class="editDetails">
-		 	<div class="form-horizontal">
-		 	  <div class="control-group">
-		 	    <label class="control-label">Name</label>
-		 	    <div class="controls">
-		 	      <input type="text" placeholder="Enter Contact Name" value="{{ Name }}">
-		 	    </div>
-		 	  </div>
-		 	  <div class="control-group">
-		 	    <label class="control-label" for="inputAddress">Address</label>
-		 	    <div class="controls">
-		 	      <input type="text" placeholder="Enter Address" value="{{ Address }}">
-		 	    </div>
-		 	  </div>
-		 	  <div class="control-group">
-		 	    <label class="control-label" for="inputEmail">Email Address</label>
-		 	    <div class="controls">
-		 	      <input type="text" placeholder="Enter Email Address" value="{{ Email }}">
-		 	    </div>
-		 	  </div>
-		 	  <div class="control-group">
-		 	    <div class="controls">
-		 	      <a class="btn">Save</a>
-		 	    </div>
-		 	  </div>
-		 	</div>
-		 </div>
-	</script>
 
+		<div class="editDetails">
+			<div class="form-horizontal">
+				<div class="control-group">
+					<label class="control-label">Name</label>
+					<div class="controls">
+						<input type="text" placeholder="Enter Contact Name" class="txtName" value="{{ Name }}">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="inputAddress">Address</label>
+					<div class="controls">
+						<input type="text" placeholder="Enter Address" class="txtAddress" value="{{ Address }}">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="inputEmail">Email Address</label>
+					<div class="controls">
+						<input type="text" placeholder="Enter Telephone Number" class="txtTelephone" value="{{ Telephone }}">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="inputEmail">Email Address</label>
+					<div class="controls">
+						<input type="text" placeholder="Enter Email Address" class="txtEmail" value="{{ Email }}">
+					</div>
+				</div>
+				<div class="control-group">
+				<div class="controls">
+					<a class="btn saveContact">Save</a>
+				</div>
+				</div>
+			</div>
+		</div>
+	</script>
 	<script src="js/main.js"></script>
 </body>
 </html>
