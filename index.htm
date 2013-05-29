@@ -9,12 +9,104 @@
 	<link rel="stylesheet" href="css/custom.css">
 	<link rel="stylesheet" href="css/custom-responsive.css">
 	<!-- Javascript files -->
-	<script src="js/underscore.min.js"></script>
-	<script src="js/backbone.min.js"></script>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
+	<script src="js/underscore.min.js"></script>
+	<script src="js/backbone.min.js"></script>
+	<script>
+		_.templateSettings = {
+		    interpolate: /\{\{(.+?)\}\}/g,  
+		    evaluate: /\{%([\s\S]+?)%\}/g,   
+		    escape: /\{%-([\s\S]+?)%\}/g
+		};
+	</script>
 </head>
 <body>
+	<div>
+		<div class="navbar">
+	      <div class="navbar-inner container-fluid">
+	      	<a href="#addNewModal" role="button" class="btn" data-toggle="modal">Add New Contact</a>
+	      	<div id="addNewModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  <div class="modal-header">
+			    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			    <h3 id="myModalLabel">Modal header</h3>
+			  </div>
+			  <div class="modal-body">
+			    <p>Modal body</p>
+			  </div>
+			  <div class="modal-footer">
+			    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+			    <button class="btn btn-primary">Create</button>
+			  </div>
+			</div>
+	        <div class="navbar-form pull-right">
+	          <input type="text">
+	          <button class="btn">Search</button>
+	        </div>
+	      </div>
+	    </div>
+		<div id="contacts" class="container-fluid"></div>
+	</div>
 
+	<script id="contactTmpl"  type="text/template">
+ 		<div style="overflow:auto">
+ 			<img src="{{ Photo }}" alt="{{ Name }}" class='userPhoto img-polaroid'/>
+		     <div class="info">
+		     	<div class="name">{{ Name }}</div>
+		 	    <div>Address: {{ Address }}</div>
+		         <div>Telephone Number: <span>{{ Telephone }}</span></div>
+		         <div>Email: <a href="mailto:{{ Email }}">{{ Email }}</a></div>
+		     </div>
+		     <i class="icon-edit" title="Edit This Contact"></i>
+ 		</div>
+ 		<clear/>
+	     <div class="editDetails">
+		 	<div class="form-horizontal">
+		 	  <div class="control-group">
+		 	    <label class="control-label">Name</label>
+		 	    <div class="controls">
+		 	      <input type="text" placeholder="Enter Contact Name" value="{{ Name }}">
+		 	    </div>
+		 	  </div>
+		 	  <div class="control-group">
+		 	    <label class="control-label" for="inputAddress">Address</label>
+		 	    <div class="controls">
+		 	      <input type="text" placeholder="Enter Address" value="{{ Address }}">
+		 	    </div>
+		 	  </div>
+		 	  <div class="control-group">
+		 	    <label class="control-label" for="inputEmail">Email Address</label>
+		 	    <div class="controls">
+		 	      <input type="text" placeholder="Enter Email Address" value="{{ Email }}">
+		 	    </div>
+		 	  </div>
+		 	  <div class="control-group">
+		 	    <div class="controls">
+		 	      <a class="btn">Save</a>
+		 	    </div>
+		 	  </div>
+		 	</div>
+		 </div>
+	</script>
+	
+	<script>
+		var contacts = [
+	        { Name: "Sandesh D", Photo: 'http://lorempixel.com/100/100/people/1', Address: "Hyderabad, Jubillee Hills1", Telephone: "0123456789", Email: "sandesh@gmail.com"},
+	        { Name: "Paul Irish", Photo: 'http://lorempixel.com/100/100/people/2', Address: "San Francisco", Telephone: "0123456789", Email: "paul@gmail.com"},
+	        { Name: "Addy Oswani", Photo: 'http://lorempixel.com/100/100/people/3', Address: "London, England", Telephone: "0123456789", Email: "addy@gmail.com"},
+	        { Name: "John Doe", Photo: 'http://lorempixel.com/100/100/people/4', Address: "Unknown City", Telephone: "0123456789", Email: "johndoe@gmail.com"},
+	        { Name: "Mark Henry", Photo: 'http://lorempixel.com/100/100/people/5', Address: "Washington, DC", Telephone: "0123456789", Email: "mark@gmail.com"},
+	        { Name: "Shemous", Photo: 'http://lorempixel.com/100/100/people/6', Address: "Washington, DC", Telephone: "0123456789", Email: "shemous@gmail.com"},
+	        { Name: "Randy", Photo: 'http://lorempixel.com/100/100/people/7', Address: "Washington, DC", Telephone: "0123456789", Email: "randy@gmail.com"},
+	        { Name: "Daniel Brian", Photo: 'http://lorempixel.com/100/100/people/8', Address: "Washington, DC", Telephone: "0123456789", Email: "daniel@gmail.com"}
+	    ];
+
+
+	    $('.icon-edit').click(function(){
+	    	$(this).closest('.contactCard').find('#editDetails').slideToggle(300);
+	    });
+
+	</script>
+	<script src="js/main.js"></script>
 </body>
 </html>

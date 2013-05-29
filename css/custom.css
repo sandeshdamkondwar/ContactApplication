@@ -1,93 +1,77 @@
 body {
-	margin-top: 50px;
-	margin-bottom: 20px;
-	font-family: 'lucida grande',tahoma,verdana,arial,sans-serif;		
+	font: 85% 'lucida grande',tahoma,verdana,arial,sans-serif;
+}
+
+.navbar {
 	min-width: 400px;
 }
 
-.mainContainer {
-    padding-left: 10px;
-    padding-right: 10px;
+.navbar-inner.container-fluid {
+	margin: 10px 20px;
+	padding: 0 10px;
 }
 
-.custom-cols {
-  background-color: #ffe5e0;
-  display: block;
-  height: 200px;
+.contactCard {
+	display: table;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	min-width: 400px;
+	padding: 10px;
+	margin: 10px 0;
+	background-color: #f3f3f3;
+	background-image: -moz-linear-gradient(#f9f9f9, #f3f3f3);
+	background-image: -webkit-linear-gradient(#f9f9f9, #f3f3f3);
+	background-image: linear-gradient(#f9f9f9, #f3f3f3);
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.dark {
-  background-color: #2ab4d5;
-  color: #ddd !important;
+.contactCard .img-polaroid{
+	float: left;	
 }
 
-#feed {
-	text-align: justify;
+.contactCard .info {
+	padding: 0px 10px;
+	display: inline-table;
 }
 
-.entry, .entrySidebar {
-	border: 1px solid rgba(255,255,255,.7);
-	box-shadow: 0 0 3px rgba(0,0,0,.3);
-	padding: .3em;
-	margin-bottom: 1em;
-	background: #1e5799; /* Old browsers */
-	background: -moz-linear-gradient(top,  #1e5799 0%, #f7f7f7 0%, #fafafa 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1e5799), color-stop(0%,#f7f7f7), color-stop(100%,#fafafa)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  #1e5799 0%,#f7f7f7 0%,#fafafa 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  #1e5799 0%,#f7f7f7 0%,#fafafa 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  #1e5799 0%,#f7f7f7 0%,#fafafa 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  #1e5799 0%,#f7f7f7 0%,#fafafa 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#fafafa',GradientType=0 ); /* IE6-9 */
-
-}
-
-.title {
-	font-size: 1.3em;
-	display: block;
-	margin: .3em;
-	padding-bottom: .3em;
-	color: rgb(0, 102, 153);
-	text-decoration: none;
-	font-family: Georgia, 'Times New Roman', Times, serif;
-	border-bottom: 1px solid rgb(214, 214, 214);
-}
-
-.content {
-	padding: .3em;
-}
-
-.note {
-	font-size: small;
-	text-align: right;
-	text-transform: capitalize;
-	margin: 0px;
-}
-
-.img-block {
-	display: block;
-	margin: 10px auto;
-}
-
-.smallImage {
-	margin-left: 10px;
-}
-
-.content .img-polaroid {
+.info > div:not(:last-child) {
 	margin-bottom: 10px;
 }
 
-.newsSource, .dropdown-menu a:hover {
-	cursor: pointer;	
-}
-
-.newsHeading {
-	color: rgb(0, 102, 153);
-	font-size: 16px;
+.contactCard .name {
+	font-size: 1.2em;
 	font-weight: bold;
-	margin-top: 0;
-	padding-left: 10px;
 }
 
-img, iframe {
-	max-width: 98% !important;
+.contactCard .icon-edit {
+	float: right;
+	cursor: pointer;
+}
+
+.contactCard .userPhoto {
+	width: 100px;
+	height: 100px;
+}
+
+.editDetails {
+	padding: 10px;
+	margin: 10px 0;
+	border: 1px solid rgb(189, 189, 189);
+	display: none;
+	transition-property: display;
+	transition-duration: .3s;
+	transition-timing-function: ease-out;
+	box-shadow: inset 0 0 5px rgba(82, 80, 80, 0.34);
+}
+
+.editDetails .input-prepend {
+	padding-right: 10px;
+}
+
+.editDetails .add-on {
+	width: 70px !important;
 }
