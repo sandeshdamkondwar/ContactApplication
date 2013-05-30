@@ -2,6 +2,11 @@ body {
 	font: 85% 'lucida grande',tahoma,verdana,arial,sans-serif;
 }
 
+#contacts .container-fluid {
+	margin-left: 0;
+	margin-right: 0;
+}
+
 /*Navbar*/
 .navbar {
 	min-width: 400px;
@@ -16,25 +21,23 @@ body {
 	padding: 0 10px;
 }
 
+#searchBy:before {
+	content: "Search By ";
+}
+
 
 /*Contact Card*/
 .contactCard {
 	display: table;
+	margin-bottom: 15px;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	min-width: 400px;
 	padding: 10px;
-	margin-bottom: 10px;
-	background-color: #f3f3f3;
-	background-image: -moz-linear-gradient(#f9f9f9, #f3f3f3);
-	background-image: -webkit-linear-gradient(#f9f9f9, #f3f3f3);
-	background-image: linear-gradient(#f9f9f9, #f3f3f3);
 	border: 1px solid rgba(0, 0, 0, 0.2);
-	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
+
 
 .contactCard .img-polaroid{
 	float: left;	
@@ -64,7 +67,7 @@ body {
 .contactCard .icon-trash {
 	float: right;
 	cursor: pointer;
-	font-size: 50px;
+	font-size: 14px;
 }
 
 .contactCard .userPhoto {
@@ -95,11 +98,41 @@ body {
 	width: 70px !important;
 }
 
-
-
 .btn, button {
 	transition: all .3s;
 }
 
+.errorMessage {
+	margin: 20px;
+}
 
 /*Modal*/
+.modal-header, 
+.modal-footer, 
+.contactCard,
+.navbar-inner{
+	background-color: #f3f3f3;
+	background-image: -moz-linear-gradient(#f9f9f9, #f3f3f3);
+	background-image: -webkit-linear-gradient(#f9f9f9, #f3f3f3);
+	background-image: linear-gradient(#f9f9f9, #f3f3f3);
+	-webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.2);		
+}
+
+.modal-header h3 {
+	font-size: 20px;
+}
+
+.modal-footer {
+	border-top: 1px solid rgba(0, 0, 0, 0.2);
+	padding: 5px 10px 10px;
+}
+
+.warning {
+	color: #c09853;
+}

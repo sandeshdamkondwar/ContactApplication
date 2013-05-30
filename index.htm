@@ -1,14 +1,17 @@
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <html>
 <head>
 	<title>Contact App</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="shortcut icon" href="http://cdn1.iconfinder.com/data/icons/stuttgart/32/my-account.png">
+
 	<!-- Stylesheets -->
 	<link rel="stylesheet" href="css/bootstrap.css">
 	<link rel="stylesheet" href="css/bootstrap-responsive.css">
+	<link rel="stylesheet" href="css/font-awesome.css">
 	<link rel="stylesheet" href="css/custom.css">
 	<link rel="stylesheet" href="css/custom-responsive.css">
+
 	<!-- Javascript files -->
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
@@ -23,74 +26,92 @@
 	</script>
 </head>
 <body>
-	<!-- Navbar -->
-	<div class="navbar">
-		<div class="navbar-inner container-fluid">
-			
-			<!-- Modal toggle button -->
-			<a href="#addNewModal" role="button" class="btn" data-toggle="modal">
-				Add New Contact 
-				<span class="icon-plus"></span> 
-			</a>
+	<div class="alert alert-error errorMessage" style="display:none;">
+		<p>Local Storage is not available in your browser, Your Browser is not Compatible for this Application.</p>
+	</div>
+	<script>
+		if(typeof(localStorage) == "undefined") {
+		    $('.errorMessage').show();
+		}
+	</script>
+    <!-- Contact collection container -->
+	<div id="contacts" class="container-fluid">
+		<!-- Put Navbar as a top element in collection -->
+		<!-- Navbar -->
+		<div class="navbar">
+			<div class="navbar-inner container-fluid">
+				<!-- Modal toggle button -->
+				<a href="#addNewModal" role="button" class="btn" data-toggle="modal" title="Add New"> <i class="icon-plus"></i> </a>
 
-			<!-- Modal window-->
-			<div id="addNewModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					<h3 id="myModalLabel">Create New Contact</h3>
-				</div>
-				<!-- Modal Body Start-->
-				<div class="modal-body">
-					<div class="form-horizontal">
-						<div class="control-group">
-							<label class="control-label" for="txtName">Name</label>
-							<div class="controls">
-								<input type="text" placeholder="Enter Contact Name" id="txtName" name="txtName">
+				<!-- Modal window-->
+				<div id="addNewModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"> <i class="icon-remove"></i> </button>
+						<h3 id="myModalLabel">Create New Contact</h3>
+					</div>
+					<!-- Modal Body Start-->
+					<div class="modal-body">
+						<div class="form-horizontal">
+							<!-- Control group -->
+							<div class="control-group">
+								<label class="control-label" for="Name">Name <i class="warning"> * </i> </label>
+								<div class="controls">
+									<input type="text" placeholder="Enter Contact Name" id="Name" name="Name">
+								</div>
 							</div>
-						</div>
-						<div class="control-group">
-							<label class="control-label" for="txtAddress">Address</label>
-							<div class="controls">
-								<input type="text" placeholder="Enter Address" id="txtAddress" name="txtAddress">
+							<!-- Control group -->
+							<div class="control-group">
+								<label class="control-label" for="Address">Address</label>
+								<div class="controls">
+									<input type="text" placeholder="Enter Address" id="Address" name="Address">
+								</div>
 							</div>
-						</div>
-						<div class="control-group">
-							<label class="control-label" for="txtTelephone">Telephone Number</label>
-							<div class="controls">
-								<input type="text" placeholder="Enter Telephone Number" id="txtTelephone" name="txtTelephone">
+							<!-- Control group -->
+							<div class="control-group">
+								<label class="control-label" for="Telephone">Telephone Number <i class="warning"> * </i> </label>
+								<div class="controls">
+									<input type="text" placeholder="Enter Telephone Number" id="Telephone" name="Telephone">
+								</div>
 							</div>
-						</div>
-						<div class="control-group">
-							<label class="control-label" for="txtEmail">Email Address</label>
-							<div class="controls">
-								<input type="email" placeholder="Enter Email Address" id="txtEmail" name="txtEmail">
+							<!-- Control group -->
+							<div class="control-group">
+								<label class="control-label" for="Email">Email Address</label>
+								<div class="controls">
+									<input type="email" placeholder="Enter Email Address" id="Email" name="Email">
+								</div>
 							</div>
-						</div>
-						<div class="control-group">
-							<label class="control-label" for="txtPhoto">Image Url</label>
-							<div class="controls">
-								<input type="text" placeholder="Enter Image URL" id="txtPhoto" name="txtPhoto">
+							<!-- Control group -->
+							<div class="control-group">
+								<label class="control-label" for="Photo">Image Url</label>
+								<div class="controls">
+									<input type="text" placeholder="Enter Image URL" id="Photo" name="Photo">
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
 				<!-- Modal Body End -->
 				<div class="modal-footer">
 					<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-					<button class="btn btn-primary">Create</button>
+					<button id="btnCreate" class="btn btn-primary">Create</button>
 				</div>
 			</div>
 
 			<!-- Contact Filter -->
 			<div class="navbar-form pull-right">
+				<div class="btn-group">
+	                <button class="btn" id="searchBy">Name</button>
+	                <button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+	                <ul class="dropdown-menu" id="searchByMenu">
+						<li><a>Name</a></li>
+						<li><a>Address</a></li>
+						<li><a>Telephone</a></li>
+						<li><a>Email</a></li>
+					</ul>
+	              </div>
 				<input id="searchContact" type="text">
-				<button class="btn">Search</button>
 			</div>
 		</div>
     </div>
-
-    <!-- Contact collection container -->
-	<div id="contacts" class="container-fluid">
 		
 		<button class="btn" id="reset" style="display:none;">Restore all contacts</button>
 	</div>

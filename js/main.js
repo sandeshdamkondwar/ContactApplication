@@ -1,68 +1,21 @@
-var contactListObject = [
-    { 
-        Name: "Sandesh D", 
-        Photo: 'http://lorempixel.com/100/100/people/1', 
-        Address: "Jubillee Hills, Hyderabad", 
-        Telephone: "0123456789", 
-        Email: "sandesh@gmail.com"
-    },
-    { 
-        Name: "Paul Irish", 
-        Photo: 'http://lorempixel.com/100/100/people/2', 
-        Address: "San Francisco", 
-        Telephone: "0123456789", 
-        Email: "paul@gmail.com"
-    },
-    { 
-        Name: "Addy Oswani", 
-        Photo: 'http://lorempixel.com/100/100/people/3', 
-        Address: "London, England", 
-        Telephone: "0123456789", 
-        Email: "addy@gmail.com"
-    },
-    { 
-        Name: "John Doe", 
-        Photo: 'http://lorempixel.com/100/100/people/4', 
-        Address: "Unknown City", 
-        Telephone: "0123456789", 
-        Email: "johndoe@gmail.com"
-    },
-    { 
-        Name: "Mark Henry", 
-        Photo: 'http://lorempixel.com/100/100/people/5', 
-        Address: "Washington, DC", 
-        Telephone: "0123456789", 
-        Email: "mark@gmail.com"
-    },
-    { 
-        Name: "Shemous", 
-        Photo: 'http://lorempixel.com/100/100/people/6', 
-        Address: "Washington, DC", 
-        Telephone: "0123456789", 
-        Email: "shemous@gmail.com"
-    },
-    { 
-        Name: "Randy", 
-        Photo: 'http://lorempixel.com/100/100/people/7', 
-        Address: "Washington, DC", 
-        Telephone: "0123456789", 
-        Email: "randy@gmail.com"
-    },
-    { 
-        Name: "Daniel Brian", 
-        Photo: 'http://lorempixel.com/100/100/people/8', 
-        Address: "Washington, DC", 
-        Telephone: "0123456789", 
-        Email: "daniel@gmail.com"
-    }
-], backUp = contactListObject;
+Storage.prototype.setObject = function(key, value) {
+    this.setItem(key, JSON.stringify(value));
+}
+
+Storage.prototype.getObject = function(key) {
+    return JSON.parse(this.getItem(key));
+}
+
+var contactListObject = 
+    [{Name: "Sandesh D", Photo: './img/anonymous.png', Address: "Jubillee Hills, Hyderabad", Telephone: "9533870340", Email: "sandesh@gmail.com"}, {Name: "Paul Irish", Photo: './img/anonymous.png', Address: "San Francisco", Telephone: "998777662211", Email: "paul@gmail.com"}, {Name: "Addy Oswani", Photo: './img/anonymous.png', Address: "London, England", Telephone: "998777662211", Email: "addy@gmail.com"}, {Name: "John Doe", Photo: './img/anonymous.png', Address: "Unknown City", Telephone: "998777662211", Email: "johndoe@gmail.com"}, {Name: "Mark Henry", Photo: './img/anonymous.png', Address: "Washington, DC", Telephone: "998777662211", Email: "mark@gmail.com"}, {Name: "Shemous", Photo: './img/anonymous.png', Address: "Washington, DC", Telephone: "998777662211", Email: "shemous@gmail.com"}, {Name: "Randy", Photo: './img/anonymous.png', Address: "Washington, DC", Telephone: "998777662211", Email: "randy@gmail.com"}, {Name: "Daniel Brian", Photo: './img/anonymous.png', Address: "Washington, DC", Telephone: "998777662211", Email: "daniel@gmail.com"} ], 
+    backUp = contactListObject;
 
 var Contact = Backbone.Model.extend({
     defaults: {
         Photo: "./img/anonymous.png",
         Name: "John Doe",
-        Email: "Email Address",
-        Address: "Jubille Hills, Hyderabad",
+        Email: "johndoe@xyz.com",
+        Address: "Silicon Valley, United State",
         Telephone: "020222222"
     }
 });
@@ -90,7 +43,8 @@ var ContactView = Backbone.View.extend({
     deleteContact: function () {
         this.model.destroy();
         this.remove();
-        localStorage.setItem('contactListObject', JSON.stringify(contactsView.collection.toJSON()));
+        localStorage.setObject('contactListObject', contactsView.collection.toJSON());
+        //localStorage.setItem('contactListObject', JSON.stringify(contactsView.collection.toJSON()));
         if(contactsView.collection.length == 0){
             $('#reset').show();
         }
@@ -105,7 +59,7 @@ var ContactView = Backbone.View.extend({
 
         this.model.set(data);
         this.render();
-        localStorage.setItem('contactListObject', JSON.stringify(contactsView.collection.toJSON()));
+        localStorage.setObject('contactListObject', contactsView.collection.toJSON());        
     }
 });
 
@@ -116,19 +70,92 @@ var ContactsCollection = Backbone.Collection.extend({
 
 var ContactsView = Backbone.View.extend({
     el: $("#contacts"),
+    searchType: "Name",
 
     initialize: function () {
         //Check if available in local Storage
         if(typeof(localStorage.contactListObject) != "undefined") {
             contactListObject = JSON.parse(localStorage.getItem('contactListObject'));
+            contactListObject = localStorage.getObject('contactListObject');
             if(contactListObject.length == 0) $('#reset').show();
         }
 
         this.collection = new ContactsCollection(contactListObject);
-        this.render();      
+        this.render();
+
+        this.collection.on("set", this.render, this);
+        this.collection.on("reset", this.render, this);
+        this.collection.on("add", this.renderContact, this);
+        this.collection.on("remove", this.render, this);
+    },
+
+    events: {
+        "click #reset": "resetContacts",
+        "click #searchByMenu a": "changeSearchType",
+        "click #btnCreate": "addNewContact",
+        "keyup #searchContact": _.debounce(function(e){
+            this.filterContacts(e.currentTarget.value);
+        }, 500)
+    },
+
+    changeSearchType: function(el) {
+        this.$el.find('#searchBy').html($(el.currentTarget).html());
+        this.searchType = $(el.currentTarget).html();
+    },
+
+    removeContact: function(model) {
+        model.destroy();
+    },
+
+    validateRequiredFields: function() {
+        if( $.trim(this.$el.find("#addNewModal input#Name").val()) == "") {
+            this.$el.find("#addNewModal input#Name").closest('.control-group').addClass('warning');
+            if( $.trim(this.$el.find("#addNewModal input#Telephone").val()) == "") {
+                this.$el.find("#addNewModal input#Telephone").closest('.control-group').addClass('warning')
+                return false;
+            }
+            return false;
+        }
+        else if( $.trim(this.$el.find("#addNewModal input#Telephone").val()) == "") {
+            this.$el.find("#addNewModal input#Telephone").closest('.control-group').addClass('warning');
+            return false;
+        }
+        return true;
+    },
+
+    addNewContact: function () {
+        if(this.validateRequiredFields() === true) {
+            if(!document.getElementById('Email').validity.valid){
+                alert("Email Address is not valid.");
+                return;
+            }
+            var newContact = {};
+            
+            this.$el.find("#addNewModal input").each(function (i, el) {
+                if ($(el).val() !== "") {
+                    newContact[el.id] = $(el).val();
+                }
+            });
+
+            contactsView.collection.push(newContact);
+            localStorage.setObject('contactListObject', this.collection.toJSON());
+            this.$el.find('#addNewModal').modal('hide');
+            this.clearFields();  
+            $("html, body").animate({ scrollTop: $(document).height() }, 800);  
+        }
+        else {
+            alert("Please provide the mandatory fields.");
+        }        
+    },
+
+    clearFields: function() {
+        this.$el.find("#addNewModal input").each(function (i, el) {
+            $(el).val("");
+        });
     },
 
     render: function () {
+        $('.contactCard').remove();
         _.each(this.collection.models, function (item) {
             this.renderContact(item);
         }, this);
@@ -139,26 +166,45 @@ var ContactsView = Backbone.View.extend({
             model: item
         });
         this.$el.append(contactView.render().el);
+    },
+
+    resetContacts: function (){
+        contactListObject = backUp;    
+        this.collection.reset(contactListObject);
+        this.render();
+        localStorage.setObject('contactListObject', this.collection.toJSON());
+        $("#reset").hide();
+    },
+
+    filterContacts: function(value) {
+        this.collection.set();
+        var self = this;
+
+        var filterType = this.filterType,
+            filtered = _.filter(localStorage.getObject("contactListObject"), function (item) {
+
+                var itemValue;
+                if(self.searchType == "Name")
+                    itemValue = item.Name;
+                else if(self.searchType == "Address")
+                    itemValue = item.Address;
+                else if(self.searchType == "Email")
+                    itemValue = item.Email;
+                else if(self.searchType == "Telephone")
+                    itemValue = item.Telephone;
+
+                if (itemValue.toLowerCase().indexOf(value.toLowerCase()) == -1)
+                    return false;
+                return true;
+            });
+        this.collection.set(filtered);
     }
 });
 
 
 var contactsView = new ContactsView(); 
 
-// Create local storage
+// Create local storage if not present
 if(typeof(localStorage.contactListObject) == "undefined") {
-    localStorage.setItem('contactListObject', JSON.stringify(contactsView.collection.toJSON()));
+    localStorage.setObject('contactListObject', contactsView.collection.toJSON());
 }
-
-// Reset button event listener
-$('#reset').on('click', function() {
-    contactListObject = backUp;    
-    localStorage.setItem('contactListObject', JSON.stringify(contactListObject));
-    contactsView.collection = new ContactsCollection(contactListObject);
-    contactsView.render();  
-    $(this).hide();
-});
-
-$('#searchContact').on('keyup', _.debounce(function(){
-    //Filter collection
-}, 500));
