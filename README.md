@@ -16,4 +16,4 @@ Technologies Used:
 Backbone,
 jQuery,
 Bootstrap,
-Backbone.Localstorage
+HTML5 Localstorage
